@@ -32,12 +32,12 @@ vue3.2 + vite PC端
     data: [
       {
         id: 5,
-        phone_name: '小米 Mate 40 Pro',
-        disabled: false
+        phone_name: '小米 12 Pro',
+        disabled: true
       },
       {
         id: 6,
-        phone_name: '小米 P40 Pro',
+        phone_name: '小米 12s Ultra',
         disabled: true
       },
       {
