@@ -11,10 +11,34 @@ export function useTargetIndex(initialIndex) {
 	return [targetIndex, setTargetIndex]
 }
 
-export function useComputedData(data, targetIndex) {
+export function useRightListData(initialIndex) {
+	const rightListData = ref(initialIndex)
+
+	function addRightListData(newData) {
+		rightListData.value = [...rightListData.value, ...newData]
+	}
+
+	function removeRightListData(newData) {
+		newData.forEach(newItem => {
+			rightListData.value = rightListData.value.filter(item => item.id !== newItem.id)
+		});
+	}
+	return [rightListData, addRightListData, removeRightListData]
+}
+
+export function useComputedData(data, targetIndex, rightListData) {
 	const leftTitle = computed(() => data[targetIndex.value].title)
-	
+	const leftListData = computed(() => {
+		const { data: currentData } = data[targetIndex.value]
+
+		return currentData.filter((item) => {
+			if (!rightListData.value.find(({ id }) => item.id === id)) {
+				return item
+			}
+		})
+	})
+
 	return {
-		leftTitle
+		leftTitle, leftListData
 	}
 }

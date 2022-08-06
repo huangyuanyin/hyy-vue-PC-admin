@@ -9,6 +9,10 @@
 			<div class="box left-list">
 				<h1 class="list-title">{{ leftTitle }}</h1>
 				<div>
+					<div v-for="item of leftListData" :key="item.id" :class="['list-item', item.disabled ? 'disabled' : '']">
+						<input type="checkbox" :disabled="item.disabled" :id="'__checkbox__' + item.id">
+						<label :for="'__checkbox__' + item.id">{{ item.phone_name }}</label>
+					</div>
 				</div>
 			</div>
 			<div class="box button-group">
@@ -25,7 +29,7 @@
 
 <script setup>
 import propsDefination from './extends/props'
-import { useTargetIndex, useComputedData } from './extends/hooks'
+import { useTargetIndex, useComputedData, useRightListData } from './extends/hooks'
 
 const props = defineProps(propsDefination)
 const options = props.data.map(({ title }) => title)
@@ -34,7 +38,9 @@ const [
 	targetIndex, setTargetIndex
 ] = useTargetIndex(0);
 
-const { leftTitle } = useComputedData(props.data, targetIndex)
+const [rightListData, addRightListData, removeRightListData] = useRightListData([])
+
+const { leftTitle, leftListData } = useComputedData(props.data, targetIndex, rightListData)
 
 </script>
 
@@ -61,6 +67,18 @@ const { leftTitle } = useComputedData(props.data, targetIndex)
 			border-bottom: 1px solid #ddd;
 			background-color: #efefef;
 			font-size: 14px;
+		}
+
+		.list-item {
+			display: flex;
+			align-items: center;
+			height: 30px;
+			font-size: 12px;
+			color: #666;
+
+			&.disabled {
+				opacity: .6;
+			}
 		}
 
 		&.button-group {
