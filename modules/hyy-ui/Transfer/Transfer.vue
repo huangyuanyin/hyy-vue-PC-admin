@@ -10,18 +10,25 @@
 				<h1 class="list-title">{{ leftTitle }}</h1>
 				<div>
 					<div v-for="item of leftListData" :key="item.id" :class="['list-item', item.disabled ? 'disabled' : '']">
-						<input type="checkbox" :disabled="item.disabled" :id="'__checkbox__' + item.id">
+						<input type="checkbox" :disabled="item.disabled" :id="'__checkbox__' + item.id"
+							@click="setCheckedData($event.target.checked, 'left', item)">
 						<label :for="'__checkbox__' + item.id">{{ item.phone_name }}</label>
 					</div>
 				</div>
 			</div>
 			<div class="box button-group">
-				<button>&lt;</button>
-				<button>&gt;</button>
+				<button :disabled="transferButtonDisabled.left" @click="removeRightListData(checkedData.right)">&lt;</button>
+				<button :disabled="transferButtonDisabled.right" @click="addRightListData(checkedData.left)">&gt;</button>
 			</div>
 			<div class="box right-list">
 				<h1 class="list-title">{{ rightTitle }}</h1>
-				<div></div>
+				<div>
+					<div v-for="item of rightListData" :key="item.id" :class="['list-item', item.disabled ? 'disabled' : '']">
+						<input type="checkbox" :disabled="item.disabled" :id="'__checkbox__' + item.id"
+							@click="setCheckedData($event.target.checked, 'right', item)">
+						<label :for="'__checkbox__' + item.id">{{ item.phone_name }}</label>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -29,18 +36,22 @@
 
 <script setup>
 import propsDefination from './extends/props'
-import { useTargetIndex, useComputedData, useRightListData } from './extends/hooks'
+import { useTargetIndex, useComputedData, useRightListData, useCheckedData } from './extends/hooks'
 
 const props = defineProps(propsDefination)
 const options = props.data.map(({ title }) => title)
 
-const [
-	targetIndex, setTargetIndex
-] = useTargetIndex(0);
+const [targetIndex, setTargetIndex] = useTargetIndex(0);
 
-const [rightListData, addRightListData, removeRightListData] = useRightListData([])
+const [checkedData, addCheckData, removeCheckedData] = useCheckedData()
 
-const { leftTitle, leftListData } = useComputedData(props.data, targetIndex, rightListData)
+const [rightListData, addRightListData, removeRightListData] = useRightListData([], checkedData)
+
+const { leftTitle, leftListData, transferButtonDisabled } = useComputedData(props.data, targetIndex, rightListData, checkedData)
+
+const setCheckedData = (checked, leftOrRight, item) => {
+	checked ? addCheckData(leftOrRight, item) : removeCheckedData(leftOrRight, item.id)
+}
 
 </script>
 
