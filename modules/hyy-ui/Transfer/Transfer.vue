@@ -1,9 +1,7 @@
 <template >
 	<div>
 		<div>
-			<select @change="setTargetIndex($event.target.value)">
-				<option v-for="(title, index) of options" :key="index" :value="index">{{ title }}</option>
-			</select>
+			<Selector :data="options" @select-change="setTargetIndex" />
 		</div>
 		<div class="transfer">
 			<div class="box left-list">
@@ -35,6 +33,8 @@
 </template>
 
 <script setup>
+import Selector from './components/Selector.vue';
+
 import propsDefination from './extends/props'
 import { useTargetIndex, useComputedData, useRightListData, useCheckedData } from './extends/hooks'
 
