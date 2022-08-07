@@ -12,7 +12,7 @@ const props = defineProps({
 	}
 })
 
-const emit = defineEmits('selectChange')
+const emit = defineEmits(['selectChange'])
 
 const selectChange = (value) => {
 	emit('selectChange', value)

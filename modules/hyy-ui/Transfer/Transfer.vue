@@ -5,7 +5,7 @@
 		</div>
 		<div class="transfer">
 			<div class="box left-list">
-				<h1 class="list-title">{{ leftTitle }}</h1>
+				<ListTitle :title="leftTitle" />
 				<div>
 					<div v-for="item of leftListData" :key="item.id" :class="['list-item', item.disabled ? 'disabled' : '']">
 						<input type="checkbox" :disabled="item.disabled" :id="'__checkbox__' + item.id"
@@ -14,12 +14,11 @@
 					</div>
 				</div>
 			</div>
-			<div class="box button-group">
-				<button :disabled="transferButtonDisabled.left" @click="removeRightListData(checkedData.right)">&lt;</button>
-				<button :disabled="transferButtonDisabled.right" @click="addRightListData(checkedData.left)">&gt;</button>
-			</div>
+			<ButtonGroup :left-button-disabled="transferButtonDisabled.left"
+				:right-button-disabled="transferButtonDisabled.right"
+				@left-button-click="removeRightListData(checkedData.right)" @right-button-click="add" />
 			<div class="box right-list">
-				<h1 class="list-title">{{ rightTitle }}</h1>
+				<ListTitle :title="rightTitle" />
 				<div>
 					<div v-for="item of rightListData" :key="item.id" :class="['list-item', item.disabled ? 'disabled' : '']">
 						<input type="checkbox" :disabled="item.disabled" :id="'__checkbox__' + item.id"
@@ -34,6 +33,8 @@
 
 <script setup>
 import Selector from './components/Selector.vue';
+import ListTitle from './components/ListTitle.vue'
+import ButtonGroup from './components/ButtonGroup.vue';
 
 import propsDefination from './extends/props'
 import { useTargetIndex, useComputedData, useRightListData, useCheckedData } from './extends/hooks'
