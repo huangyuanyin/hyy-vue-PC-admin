@@ -7,24 +7,17 @@
 			<div class="box left-list">
 				<ListTitle :title="leftTitle" />
 				<div>
-					<div v-for="item of leftListData" :key="item.id" :class="['list-item', item.disabled ? 'disabled' : '']">
-						<input type="checkbox" :disabled="item.disabled" :id="'__checkbox__' + item.id"
-							@click="setCheckedData($event.target.checked, 'left', item)">
-						<label :for="'__checkbox__' + item.id">{{ item.phone_name }}</label>
-					</div>
+					<ListItem :data="leftListData" left-or-right="left" @check-box-click="setCheckedData" />
 				</div>
 			</div>
 			<ButtonGroup :left-button-disabled="transferButtonDisabled.left"
 				:right-button-disabled="transferButtonDisabled.right"
-				@left-button-click="removeRightListData(checkedData.right)" @right-button-click="add" />
+				@left-button-click="removeRightListData(checkedData.right)"
+				@right-button-click="addRightListData(checkedData.left)" />
 			<div class="box right-list">
 				<ListTitle :title="rightTitle" />
 				<div>
-					<div v-for="item of rightListData" :key="item.id" :class="['list-item', item.disabled ? 'disabled' : '']">
-						<input type="checkbox" :disabled="item.disabled" :id="'__checkbox__' + item.id"
-							@click="setCheckedData($event.target.checked, 'right', item)">
-						<label :for="'__checkbox__' + item.id">{{ item.phone_name }}</label>
-					</div>
+					<ListItem :data="rightListData" left-or-right="right" @check-box-click="setCheckedData" />
 				</div>
 			</div>
 		</div>
@@ -35,6 +28,7 @@
 import Selector from './components/Selector.vue';
 import ListTitle from './components/ListTitle.vue'
 import ButtonGroup from './components/ButtonGroup.vue';
+import ListItem from './components/ListItem.vue';
 
 import propsDefination from './extends/props'
 import { useTargetIndex, useComputedData, useRightListData, useCheckedData } from './extends/hooks'
@@ -79,18 +73,6 @@ const setCheckedData = (checked, leftOrRight, item) => {
 			border-bottom: 1px solid #ddd;
 			background-color: #efefef;
 			font-size: 14px;
-		}
-
-		.list-item {
-			display: flex;
-			align-items: center;
-			height: 30px;
-			font-size: 12px;
-			color: #666;
-
-			&.disabled {
-				opacity: .6;
-			}
 		}
 
 		&.button-group {
