@@ -1,5 +1,8 @@
 <template>
-  <Transfer :data="data" right-title="已选择机型"></Transfer>
+  <div id="app">
+    <router-view></router-view>
+    <!-- <Transfer :data="data" right-title="已选择机型"></Transfer> -->
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -83,5 +86,12 @@ const data = [
 ]
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+#app {
+  height: 100%;
+
+  >div {
+    height: 100%;
+  }
+}
 </style>

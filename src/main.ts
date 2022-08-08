@@ -1,6 +1,7 @@
 import { createApp } from 'vue'
 import './style.css'
 import App from './App.vue'
+import router from './router/index.js'
 
 // 组件库 应该作为一个插件 可以在main.js中直接使用
 /*
@@ -15,6 +16,11 @@ import App from './App.vue'
 
 import Transfer from '../modules/hyy-ui/Transfer'
 
-createApp(App).use(Transfer).mount('#app')
+const app = createApp(App)
+
+app.use(router)
+app.use(Transfer)
+
+app.mount('#app')
 
 // createApp(App).mount('#app')
