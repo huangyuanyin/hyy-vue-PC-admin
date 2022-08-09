@@ -1,5 +1,6 @@
 <template>
-	<div v-for="item of data" :key="item.id" :class="['list-item', item.disabled ? 'disabled' : '']">
+	<div v-for="item of data" :key="item.id" :class="['list-item', item.disabled ? 'disabled' : '']"
+		:draggable="!item.disabled" @dragstart="dragItem(item)">
 		<input type="checkbox" :disabled="item.disabled" :id="'__checkbox__' + item.id"
 			@click="checkBoxClick($event.target.checked, leftOrRight, item)">
 		<label :for="'__checkbox__' + item.id">{{ item.phone_name }}</label>
@@ -20,10 +21,14 @@ const props = defineProps({
 	}
 });
 
-const emit = defineEmits(['checkBoxClick'])
+const emit = defineEmits(['checkBoxClick', 'dragItem'])
 
 const checkBoxClick = (checked, leftOrRight, item) => {
 	emit('checkBoxClick', checked, leftOrRight, item)
+}
+
+const dragItem = (item) => {
+	emit("dragItem", item)
 }
 </script>
 

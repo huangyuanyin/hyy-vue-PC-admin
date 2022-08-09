@@ -4,20 +4,20 @@
 			<Selector :data="options" @select-change="setTargetIndex" />
 		</div>
 		<div class="transfer">
-			<div class="box left-list">
+			<div class="box left-list" @dragover.prevent @drop="removeRightListData([dragedItem])">
 				<ListTitle :title="leftTitle" />
 				<div>
-					<ListItem :data="leftListData" left-or-right="left" @check-box-click="setCheckedData" />
+					<ListItem :data="leftListData" left-or-right="left" @check-box-click="setCheckedData" @drag-item="setDragedItem"/>
 				</div>
 			</div>
 			<ButtonGroup :left-button-disabled="transferButtonDisabled.left"
 				:right-button-disabled="transferButtonDisabled.right"
 				@left-button-click="removeRightListData(checkedData.right)"
 				@right-button-click="addRightListData(checkedData.left)" />
-			<div class="box right-list">
+			<div class="box right-list" @dragover.prevent @drop="addRightListData([dragedItem])">
 				<ListTitle :title="rightTitle" />
 				<div>
-					<ListItem :data="rightListData" left-or-right="right" @check-box-click="setCheckedData" />
+					<ListItem :data="rightListData" left-or-right="right" @check-box-click="setCheckedData" @drag-item="setDragedItem"/>
 				</div>
 			</div>
 		</div>
@@ -31,7 +31,7 @@ import ButtonGroup from './components/ButtonGroup.vue';
 import ListItem from './components/ListItem.vue';
 
 import propsDefination from './extends/props'
-import { useTargetIndex, useComputedData, useRightListData, useCheckedData } from './extends/hooks'
+import { useTargetIndex, useComputedData, useRightListData, useCheckedData, useDragedItem } from './extends/hooks'
 
 const props = defineProps(propsDefination)
 const options = props.data.map(({ title }) => title)
@@ -41,6 +41,8 @@ const [targetIndex, setTargetIndex] = useTargetIndex(0);
 const [checkedData, addCheckData, removeCheckedData] = useCheckedData()
 
 const [rightListData, addRightListData, removeRightListData] = useRightListData([], checkedData)
+
+const [dragedItem, setDragedItem] = useDragedItem()
 
 const { leftTitle, leftListData, transferButtonDisabled } = useComputedData(props.data, targetIndex, rightListData, checkedData)
 

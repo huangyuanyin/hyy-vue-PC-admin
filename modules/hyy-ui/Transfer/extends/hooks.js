@@ -60,6 +60,17 @@ export function useCheckedData() {
 	return [checkedData, addCheckData, removeCheckedData]
 }
 
+// 拖拽
+export function useDragedItem(){
+	const dragedItem = ref(null)
+
+	function setDragedItem(item){
+		dragedItem.value = item
+	}
+
+	return [dragedItem,setDragedItem]
+}
+
 // 计算属性
 export function useComputedData(data, targetIndex, rightListData, checkedData) {
 	const leftTitle = computed(() => data[targetIndex.value].title);
