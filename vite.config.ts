@@ -1,10 +1,14 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { resolve } from 'path' // 配置别名需要的路径模块
+import { viteMockServe } from 'vite-plugin-mock'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [vue()],
+  plugins: [
+    vue(),
+    viteMockServe({ supportTs: false })
+  ],
   resolve: {
     extensions: ['.vue', '.js', ".ts", ".tsx", ".jsx"],
     // 配置别名
